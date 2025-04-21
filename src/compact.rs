@@ -30,7 +30,7 @@ use crate::Version;
 /// assert_eq!(b & KEEP_LAST[3], 0b010)
 /// ```
 #[rustfmt::skip]
-#[cfg(not(target_arch = "arm"))]
+#[cfg(target_pointer_width = "64")]
 pub const KEEP_LAST: [usize; 65] = [
   0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383,
   32767, 65535, 131_071, 262_143, 524_287, 1_048_575, 2_097_151, 4_194_303, 8_388_607,
@@ -49,7 +49,7 @@ pub const KEEP_LAST: [usize; 65] = [
 /// Values to keep last X bits of a u8
 /// `KEEP_LAST[i]` equates `(1 << i) - 1`
 #[rustfmt::skip]
-#[cfg(target_arch = "arm")]
+#[cfg(target_pointer_width = "32")]
 pub const KEEP_LAST: [usize; 33] = [
   0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1_023, 2_047, 4_095, 8_191, 16_383,
   32_767, 65_535, 131_071, 262_143, 524_287, 1_048_575, 2_097_151, 4_194_303, 8_388_607,
