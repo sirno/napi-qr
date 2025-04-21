@@ -16,46 +16,46 @@ const BOTTOM: char = '▄';
 
 /// Helper to print two lines at the same time
 fn print_line(line1: &[Module], line2: &[Module], size: usize) -> String {
-    let mut line = String::with_capacity(size);
-    for i in 0..size {
-        match (line1[i].value(), line2[i].value()) {
-            (true, true) => line.push(EMPTY),
-            (true, false) => line.push(BOTTOM),
-            (false, true) => line.push(TOP),
-            (false, false) => line.push(BLOCK),
-        }
+  let mut line = String::with_capacity(size);
+  for i in 0..size {
+    match (line1[i].value(), line2[i].value()) {
+      (true, true) => line.push(EMPTY),
+      (true, false) => line.push(BOTTOM),
+      (false, true) => line.push(TOP),
+      (false, false) => line.push(BLOCK),
     }
-    line
+  }
+  line
 }
 
 /// Prints a matrix with margins
 pub fn print_matrix_with_margin(qr: &QRCode) -> String {
-    let mut out = String::new();
+  let mut out = String::new();
 
-    let line = print_line(
-        &[Module::empty(true); 177],
-        &[Module::empty(false); 177],
-        qr.size,
-    );
+  let line = print_line(
+    &[Module::empty(true); 177],
+    &[Module::empty(false); 177],
+    qr.size,
+  );
 
-    out.push(BOTTOM);
-    out.push_str(&line);
-    out.push_str(&format!("{BOTTOM}\n"));
+  out.push(BOTTOM);
+  out.push_str(&line);
+  out.push_str(&format!("{BOTTOM}\n"));
 
-    // Black background
-    for i in (0..qr.size - 1).step_by(2) {
-        let line = print_line(&qr[i], &qr[i + 1], qr.size);
-        out.push(BLOCK);
-        out.push_str(&line);
-        out.push_str(&format!("{BLOCK}\n"));
-    }
-
-    let line = print_line(&qr[qr.size - 1], &[Module::empty(false); 177], qr.size);
+  // Black background
+  for i in (0..qr.size - 1).step_by(2) {
+    let line = print_line(&qr[i], &qr[i + 1], qr.size);
     out.push(BLOCK);
     out.push_str(&line);
-    out.push(BLOCK);
+    out.push_str(&format!("{BLOCK}\n"));
+  }
 
-    out
+  let line = print_line(&qr[qr.size - 1], &[Module::empty(false); 177], qr.size);
+  out.push(BLOCK);
+  out.push_str(&line);
+  out.push(BLOCK);
+
+  out
 }
 
 #[cfg(test)]
@@ -69,6 +69,6 @@ use crate::{compact::CompactQR, Version};
 /// { 101 } => "01100101"
 #[cfg(test)]
 pub fn binary_to_binarystring_version(binary: [u8; 5430], version: Version) -> CompactQR {
-    let max = version.max_bytes() * 8;
-    CompactQR::from_array(&binary, max + version.missing_bits())
+  let max = version.max_bytes() * 8;
+  CompactQR::from_array(&binary, max + version.missing_bits())
 }

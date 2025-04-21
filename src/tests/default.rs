@@ -15,7 +15,7 @@ pub(crate) const EMPT: fn(bool) -> Module = Module::empty;
 
 #[test]
 fn from_bool_v1() {
-    #[rustfmt::skip]
+  #[rustfmt::skip]
     const MAT_FAST_QR_COM_V1_BOOL: [[bool; 21]; 21] = [[true, true, true, true, true, true, true, false, false, false, true, true, true, false, true, true, true, true, true, true, true],
         [true, false, false, false, false, false, true, false, true, true, true, false, false, false, true, false, false, false, false, false, true],
         [true, false, true, true, true, false, true, false, false, true, false, false, false, false, true, false, true, true, true, false, true],
@@ -39,7 +39,7 @@ fn from_bool_v1() {
         [true, true, true, true, true, true, true, false, true, true, false, true, false, false, false, true, true, true, true, false, true]
     ];
 
-    #[rustfmt::skip]
+  #[rustfmt::skip]
         let mat_fast_qr_com_v1: [[Module; 21]; 21] = [
         [FIND(T), FIND(T), FIND(T), FIND(T), FIND(T), FIND(T), FIND(T), EMPT(F), FORM(F), DATA(F), DATA(T), DATA(T), DATA(T), EMPT(F), FIND(T), FIND(T), FIND(T), FIND(T), FIND(T), FIND(T), FIND(T)],
         [FIND(T), FIND(F), FIND(F), FIND(F), FIND(F), FIND(F), FIND(T), EMPT(F), FORM(T), DATA(T), DATA(T), DATA(F), DATA(F), EMPT(F), FIND(T), FIND(F), FIND(F), FIND(F), FIND(F), FIND(F), FIND(T)],
@@ -64,19 +64,19 @@ fn from_bool_v1() {
         [FIND(T), FIND(T), FIND(T), FIND(T), FIND(T), FIND(T), FIND(T), EMPT(F), FORM(T), DATA(T), DATA(F), DATA(T), DATA(F), DATA(F), DATA(F), DATA(T), DATA(T), DATA(T), DATA(T), DATA(F), DATA(T)]
     ];
 
-    let qr = crate::default::create_mat_from_bool(&MAT_FAST_QR_COM_V1_BOOL);
+  let qr = crate::default::create_mat_from_bool(&MAT_FAST_QR_COM_V1_BOOL);
 
-    for i in 0..qr.size {
-        let row = &qr[i];
-        for (j, elem) in row.iter().enumerate() {
-            assert_eq!(elem, &mat_fast_qr_com_v1[i][j], "mat[{i}][{j}]");
-        }
+  for i in 0..qr.size {
+    let row = &qr[i];
+    for (j, elem) in row.iter().enumerate() {
+      assert_eq!(elem, &mat_fast_qr_com_v1[i][j], "mat[{i}][{j}]");
     }
+  }
 }
 
 #[test]
 fn from_bool_v3() {
-    #[rustfmt::skip]
+  #[rustfmt::skip]
     const MAT_FAST_QR_COM_BOOL: [[bool; 29]; 29] = [
         [true, true, true, true, true, true, true, false, true, true, true, true, true, true, true, true, true, true, true, true, false, false, true, true, true, true, true, true, true],
         [true, false, false, false, false, false, true, false, false, false, false, false, false, true, true, false, false, true, true, true, false, false, true, false, false, false, false, false, true],
@@ -109,7 +109,7 @@ fn from_bool_v3() {
         [true, true, true, true, true, true, true, false, false, false, true, true, false, false, true, true, true, true, true, false, false, false, true, false, true, false, true, false, false]
     ];
 
-    #[rustfmt::skip]
+  #[rustfmt::skip]
         let mat_fast_qr_com_v3: [[Module; 29]; 29] = [
         [FIND(T), FIND(T), FIND(T), FIND(T), FIND(T), FIND(T), FIND(T), EMPT(F), FORM(T), DATA(T), DATA(T), DATA(T), DATA(T), DATA(T), DATA(T), DATA(T), DATA(T), DATA(T), DATA(T), DATA(T), DATA(F), EMPT(F), FIND(T), FIND(T), FIND(T), FIND(T), FIND(T), FIND(T), FIND(T)],
         [FIND(T), FIND(F), FIND(F), FIND(F), FIND(F), FIND(F), FIND(T), EMPT(F), FORM(F), DATA(F), DATA(F), DATA(F), DATA(F), DATA(T), DATA(T), DATA(F), DATA(F), DATA(T), DATA(T), DATA(T), DATA(F), EMPT(F), FIND(T), FIND(F), FIND(F), FIND(F), FIND(F), FIND(F), FIND(T)],
@@ -142,19 +142,19 @@ fn from_bool_v3() {
         [FIND(T), FIND(T), FIND(T), FIND(T), FIND(T), FIND(T), FIND(T), EMPT(F), FORM(F), DATA(F), DATA(T), DATA(T), DATA(F), DATA(F), DATA(T), DATA(T), DATA(T), DATA(T), DATA(T), DATA(F), DATA(F), DATA(F), DATA(T), DATA(F), DATA(T), DATA(F), DATA(T), DATA(F), DATA(F)]
     ];
 
-    let qr = crate::default::create_mat_from_bool(&MAT_FAST_QR_COM_BOOL);
+  let qr = crate::default::create_mat_from_bool(&MAT_FAST_QR_COM_BOOL);
 
-    for i in 0..qr.size {
-        let row = &qr[i];
-        for (j, elem) in row.iter().enumerate() {
-            assert_eq!(elem, &mat_fast_qr_com_v3[i][j], "mat[{i}][{j}]");
-        }
+  for i in 0..qr.size {
+    let row = &qr[i];
+    for (j, elem) in row.iter().enumerate() {
+      assert_eq!(elem, &mat_fast_qr_com_v3[i][j], "mat[{i}][{j}]");
     }
+  }
 }
 
 #[test]
 fn from_bool_v7() {
-    #[rustfmt::skip]
+  #[rustfmt::skip]
     const MAT_FAST_QR_COM_V7_BOOL: [[bool; 45]; 45] = [
         [true, true, true, true, true, true, true, false, true, false, false, false, false, true, true, false, true, true, false, true, true, true, true, false, false, true, true, true, false, true, true, true, false, false, false, false, true, false, true, true, true, true, true, true, true],
         [true, false, false, false, false, false, true, false, true, false, false, false, false, true, false, false, false, true, false, false, false, false, true, true, false, false, true, false, false, false, false, false, false, true, false, true, false, false, true, false, false, false, false, false, true],
@@ -203,7 +203,7 @@ fn from_bool_v7() {
         [true, true, true, true, true, true, true, false, false, false, false, false, false, false, false, false, false, true, true, true, true, false, false, false, false, true, true, false, true, true, true, true, true, true, true, true, true, true, true, true, false, false, true, true, false]
     ];
 
-    #[rustfmt::skip]
+  #[rustfmt::skip]
         let mat_fast_qr_com_v7: [[Module; 45]; 45] = [
         [FIND(T), FIND(T), FIND(T), FIND(T), FIND(T), FIND(T), FIND(T), EMPT(F), FORM(T), DATA(F), DATA(F), DATA(F), DATA(F), DATA(T), DATA(T), DATA(F), DATA(T), DATA(T), DATA(F), DATA(T), DATA(T), DATA(T), DATA(T), DATA(F), DATA(F), DATA(T), DATA(T), DATA(T), DATA(F), DATA(T), DATA(T), DATA(T), DATA(F), DATA(F), VERS(F), VERS(F), VERS(T), EMPT(F), FIND(T), FIND(T), FIND(T), FIND(T), FIND(T), FIND(T), FIND(T)],
         [FIND(T), FIND(F), FIND(F), FIND(F), FIND(F), FIND(F), FIND(T), EMPT(F), FORM(T), DATA(F), DATA(F), DATA(F), DATA(F), DATA(T), DATA(F), DATA(F), DATA(F), DATA(T), DATA(F), DATA(F), DATA(F), DATA(F), DATA(T), DATA(T), DATA(F), DATA(F), DATA(T), DATA(F), DATA(F), DATA(F), DATA(F), DATA(F), DATA(F), DATA(T), VERS(F), VERS(T), VERS(F), EMPT(F), FIND(T), FIND(F), FIND(F), FIND(F), FIND(F), FIND(F), FIND(T)],
@@ -252,30 +252,30 @@ fn from_bool_v7() {
         [FIND(T), FIND(T), FIND(T), FIND(T), FIND(T), FIND(T), FIND(T), EMPT(F), FORM(F), DATA(F), DATA(F), DATA(F), DATA(F), DATA(F), DATA(F), DATA(F), DATA(F), DATA(T), DATA(T), DATA(T), DATA(T), DATA(F), DATA(F), DATA(F), DATA(F), DATA(T), DATA(T), DATA(F), DATA(T), DATA(T), DATA(T), DATA(T), DATA(T), DATA(T), DATA(T), DATA(T), DATA(T), DATA(T), DATA(T), DATA(T), DATA(F), DATA(F), DATA(T), DATA(T), DATA(F)]
     ];
 
-    let qr = crate::default::create_mat_from_bool(&MAT_FAST_QR_COM_V7_BOOL);
+  let qr = crate::default::create_mat_from_bool(&MAT_FAST_QR_COM_V7_BOOL);
 
-    for i in 0..qr.size {
-        let row = &qr[i];
-        for (j, elem) in row.iter().enumerate() {
-            assert_eq!(elem, &mat_fast_qr_com_v7[i][j], "mat[{i}][{j}]");
-        }
+  for i in 0..qr.size {
+    let row = &qr[i];
+    for (j, elem) in row.iter().enumerate() {
+      assert_eq!(elem, &mat_fast_qr_com_v7[i][j], "mat[{i}][{j}]");
     }
+  }
 }
 
 #[test]
 fn transpose() {
-    let mut qr = QRCode::default(10);
-    for i in 0..100 {
-        qr.data[i] = Module(i as u8);
-    }
+  let mut qr = QRCode::default(10);
+  for i in 0..100 {
+    qr.data[i] = Module(i as u8);
+  }
 
-    let transpose = crate::default::transpose(&qr);
-    for i in 0..10 {
-        for j in 0..10 {
-            assert_eq!(
-                transpose[j][i], qr[i][j],
-                "transpose[{i}][{j}] doesn't match"
-            );
-        }
+  let transpose = crate::default::transpose(&qr);
+  for i in 0..10 {
+    for j in 0..10 {
+      assert_eq!(
+        transpose[j][i], qr[i][j],
+        "transpose[{i}][{j}] doesn't match"
+      );
     }
+  }
 }

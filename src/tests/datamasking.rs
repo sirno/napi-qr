@@ -6,16 +6,16 @@ const T: bool = true;
 
 #[test]
 fn mask_checkerboard_test() {
-    let mut qr = QRCode::default(10);
-    crate::datamasking::mask(&mut qr, Mask::Checkerboard);
+  let mut qr = QRCode::default(10);
+  crate::datamasking::mask(&mut qr, Mask::Checkerboard);
 
-    #[rustfmt::skip]
+  #[rustfmt::skip]
         let qr_bool = [
         &qr[0][..10], &qr[1][..10], &qr[2][..10], &qr[3][..10], &qr[4][..10],
         &qr[5][..10], &qr[6][..10], &qr[7][..10], &qr[8][..10], &qr[9][..10],
     ];
 
-    #[rustfmt::skip]
+  #[rustfmt::skip]
     assert_eq!(
         qr_bool,
         [
@@ -35,16 +35,16 @@ fn mask_checkerboard_test() {
 
 #[test]
 fn mask_horizontal_test() {
-    let mut qr = QRCode::default(10);
-    crate::datamasking::mask(&mut qr, Mask::HorizontalLines);
+  let mut qr = QRCode::default(10);
+  crate::datamasking::mask(&mut qr, Mask::HorizontalLines);
 
-    #[rustfmt::skip]
+  #[rustfmt::skip]
         let qr_bool = [
         &qr[0][..10], &qr[1][..10], &qr[2][..10], &qr[3][..10], &qr[4][..10],
         &qr[5][..10], &qr[6][..10], &qr[7][..10], &qr[8][..10], &qr[9][..10],
     ];
 
-    #[rustfmt::skip]
+  #[rustfmt::skip]
     assert_eq!(
         qr_bool,
         [
@@ -64,16 +64,16 @@ fn mask_horizontal_test() {
 
 #[test]
 fn mask_vertical_test() {
-    let mut qr = QRCode::default(10);
-    crate::datamasking::mask(&mut qr, Mask::VerticalLines);
+  let mut qr = QRCode::default(10);
+  crate::datamasking::mask(&mut qr, Mask::VerticalLines);
 
-    #[rustfmt::skip]
+  #[rustfmt::skip]
         let qr_bool = [
         &qr[0][..10], &qr[1][..10], &qr[2][..10], &qr[3][..10], &qr[4][..10],
         &qr[5][..10], &qr[6][..10], &qr[7][..10], &qr[8][..10], &qr[9][..10],
     ];
 
-    #[rustfmt::skip]
+  #[rustfmt::skip]
     assert_eq!(
         qr_bool,
         [
@@ -93,16 +93,16 @@ fn mask_vertical_test() {
 
 #[test]
 fn mask_diagonal_test() {
-    let mut qr = QRCode::default(10);
-    crate::datamasking::mask(&mut qr, Mask::DiagonalLines);
+  let mut qr = QRCode::default(10);
+  crate::datamasking::mask(&mut qr, Mask::DiagonalLines);
 
-    #[rustfmt::skip]
+  #[rustfmt::skip]
         let qr_bool = [
         &qr[0][..10], &qr[1][..10], &qr[2][..10], &qr[3][..10], &qr[4][..10],
         &qr[5][..10], &qr[6][..10], &qr[7][..10], &qr[8][..10], &qr[9][..10],
     ];
 
-    #[rustfmt::skip]
+  #[rustfmt::skip]
     assert_eq!(
         qr_bool,
         [
@@ -122,16 +122,16 @@ fn mask_diagonal_test() {
 
 #[test]
 fn mask_large_checkerboard_test() {
-    let mut qr = QRCode::default(10);
-    crate::datamasking::mask(&mut qr, Mask::LargeCheckerboard);
+  let mut qr = QRCode::default(10);
+  crate::datamasking::mask(&mut qr, Mask::LargeCheckerboard);
 
-    #[rustfmt::skip]
+  #[rustfmt::skip]
         let qr_bool = [
         &qr[0][..10], &qr[1][..10], &qr[2][..10], &qr[3][..10], &qr[4][..10],
         &qr[5][..10], &qr[6][..10], &qr[7][..10], &qr[8][..10], &qr[9][..10],
     ];
 
-    #[rustfmt::skip]
+  #[rustfmt::skip]
     assert_eq!(
         qr_bool,
         [
@@ -151,16 +151,16 @@ fn mask_large_checkerboard_test() {
 
 #[test]
 fn mask_field_test() {
-    let mut qr = QRCode::default(10);
-    crate::datamasking::mask(&mut qr, Mask::Fields);
+  let mut qr = QRCode::default(10);
+  crate::datamasking::mask(&mut qr, Mask::Fields);
 
-    #[rustfmt::skip]
+  #[rustfmt::skip]
         let qr_bool = [
         &qr[0][..10], &qr[1][..10], &qr[2][..10], &qr[3][..10], &qr[4][..10],
         &qr[5][..10], &qr[6][..10], &qr[7][..10], &qr[8][..10], &qr[9][..10],
     ];
 
-    #[rustfmt::skip]
+  #[rustfmt::skip]
     assert_eq!(
         qr_bool,
         [
@@ -180,16 +180,16 @@ fn mask_field_test() {
 
 #[test]
 fn mask_diamond_test() {
-    let mut qr = QRCode::default(10);
-    crate::datamasking::mask(&mut qr, Mask::Diamonds);
+  let mut qr = QRCode::default(10);
+  crate::datamasking::mask(&mut qr, Mask::Diamonds);
 
-    #[rustfmt::skip]
+  #[rustfmt::skip]
         let qr_bool = [
         &qr[0][..10], &qr[1][..10], &qr[2][..10], &qr[3][..10], &qr[4][..10],
         &qr[5][..10], &qr[6][..10], &qr[7][..10], &qr[8][..10], &qr[9][..10],
     ];
 
-    #[rustfmt::skip]
+  #[rustfmt::skip]
     assert_eq!(
         qr_bool,
         [
@@ -209,17 +209,17 @@ fn mask_diamond_test() {
 
 #[test]
 fn mask_meadow_test() {
-    let mut qr = QRCode::default(10);
+  let mut qr = QRCode::default(10);
 
-    crate::datamasking::mask(&mut qr, Mask::Meadow);
+  crate::datamasking::mask(&mut qr, Mask::Meadow);
 
-    #[rustfmt::skip]
+  #[rustfmt::skip]
         let qr_bool = [
         &qr[0][..10], &qr[1][..10], &qr[2][..10], &qr[3][..10], &qr[4][..10],
         &qr[5][..10], &qr[6][..10], &qr[7][..10], &qr[8][..10], &qr[9][..10],
     ];
 
-    #[rustfmt::skip]
+  #[rustfmt::skip]
     assert_eq!(
         qr_bool,
         [
