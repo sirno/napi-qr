@@ -64,12 +64,12 @@
     "ava": "^6.2.0",
     "chalk": "^5.4.1",
     "husky": "^9.1.7",
-    "lint-staged": "^15.5.0",
+    "lint-staged": "^15.5.1",
     "npm-run-all2": "^7.0.2",
-    "oxlint": "^0.16.3",
+    "oxlint": "^0.16.6",
     "prettier": "^3.5.3",
     "tinybench": "^4.0.1",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.3"
   },
   "lint-staged": {
     "*.@(js|ts|tsx)": [
