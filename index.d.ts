@@ -6,17 +6,17 @@
 /** Different possible Shapes to represent modules in a [`crate::QRCode`] */
 export const enum Shape {
   /** Square Shape */
-  Square = 'Square',
+  Square = "Square",
   /** Circle Shape */
-  Circle = 'Circle',
+  Circle = "Circle",
   /** RoundedSquare Shape */
-  RoundedSquare = 'RoundedSquare',
+  RoundedSquare = "RoundedSquare",
   /** Vertical Shape */
-  Vertical = 'Vertical',
+  Vertical = "Vertical",
   /** Horizontal Shape */
-  Horizontal = 'Horizontal',
+  Horizontal = "Horizontal",
   /** Diamond Shape */
-  Diamond = 'Diamond',
+  Diamond = "Diamond",
 }
 /** Different possible image background shapes */
 export const enum ImageBackgroundShape {
@@ -121,22 +121,22 @@ export const enum Version {
   /** Version n°40 */
   V40 = 39,
 }
-export declare function qr(content: string): Array<number>
-export declare function qrSvg(content: string, options: SvgOptions): string
+export declare function qr(content: string): Array<number>;
+export declare function qrSvg(content: string, options: SvgOptions): string;
 export declare class SvgOptions {
-  shape: Shape
-  margin: number
-  ecl?: ECL
-  version?: Version
-  image: string
-  imageBackgroundShape: ImageBackgroundShape
-  imageSize: Array<number>
-  imagePosition: Array<number>
-  constructor()
+  shape: Shape;
+  margin: number;
+  ecl?: ECL;
+  version?: Version;
+  image: string;
+  imageBackgroundShape: ImageBackgroundShape;
+  imageSize: Array<number>;
+  imagePosition: Array<number>;
+  constructor();
   /** Updates the module color of the QRCode. Tales a string in the format `#RRGGBB[AA]`. */
-  set moduleColor(moduleColor: string)
+  set moduleColor(moduleColor: string);
   /** Updates the background color of the QRCode. Tales a string in the format `#RRGGBB[AA]`. */
-  set backgroundColor(backgroundColor: string)
+  set backgroundColor(backgroundColor: string);
   /** Updates the background color of the image. Takes a string in the format `#RRGGBB[AA]`. */
-  set imageBackgroundColor(imageBackgroundColor: string)
+  set imageBackgroundColor(imageBackgroundColor: string);
 }
