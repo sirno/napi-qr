@@ -85,7 +85,6 @@ impl From<Shape> for &str {
 
 impl Shape {
   pub fn module_fn(&self, y: usize, x: usize, _: Module) -> String {
-    println!("{:?}", self);
     match self {
       Shape::Square => format!("M{x},{y}h1v1h-1"),
       Shape::Circle => format!("M{},{y}.5a.5,.5 0 1,1 0,-.1", x + 1),
