@@ -252,8 +252,6 @@ impl SvgBuilder {
     const DEFAULT_COMMAND: [Shape; 1] = [Shape::Square];
     const DEFAULT_COMMAND_COLOR: [Option<Color>; 1] = [None];
 
-    println!("{:?}", &self.commands);
-
     // TODO: cleanup this basic logic
     let command_colors: &[Option<Color>] = if !self.commands.is_empty() {
       &self.command_colors

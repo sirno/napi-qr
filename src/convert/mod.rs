@@ -7,7 +7,7 @@ use svg::SvgError;
 pub mod image;
 use image::ImageError;
 
-use crate::Module;
+use crate::{Module, ModuleType};
 use napi_derive::napi;
 
 /// Converts a position to a module svg
@@ -39,6 +39,12 @@ pub enum Shape {
   Horizontal,
   /// Diamond Shape
   Diamond,
+}
+
+pub struct ModuleShape {
+  shape: Shape,
+  scale: f64,
+  type: ModuleType,
 }
 
 impl From<Shape> for usize {

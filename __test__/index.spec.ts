@@ -19,6 +19,7 @@ test("test diamond qr", (t) => {
   const target = "Hello QR Coded Planet";
   const options = new SvgOptions();
   options.shape = Shape.Diamond;
+  options.margin = 5;
   qrSvg(target, options);
   t.true(true, "pass");
 });
@@ -28,5 +29,14 @@ test("test circle qr", (t) => {
   const options = new SvgOptions();
   options.shape = Shape.Circle;
   qrSvg(target, options);
+  t.true(true, "pass");
+});
+
+test("test rounded square qr", (t) => {
+  const target = "Hello QR Coded Planet";
+  const options = new SvgOptions();
+  options.shape = Shape.RoundedSquare;
+  const svg = qrSvg(target, options);
+  t.log(svg);
   t.true(true, "pass");
 });
