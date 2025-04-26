@@ -44,7 +44,7 @@ pub enum Shape {
 pub struct ModuleShape {
   shape: Shape,
   scale: f64,
-  type: ModuleType,
+  r#type: ModuleType,
 }
 
 impl From<Shape> for usize {
