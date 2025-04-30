@@ -28,7 +28,7 @@ use std::io;
 use crate::QRCode;
 
 use super::Color;
-use super::{svg::SvgBuilder, Builder, Shape};
+use super::{svg::SvgBuilder, Builder, ModuleStyle};
 
 use resvg::tiny_skia::{self, Pixmap};
 use resvg::usvg;
@@ -92,8 +92,8 @@ impl Builder for ImageBuilder {
     self
   }
 
-  fn shape(&mut self, shape: Shape) -> &mut Self {
-    self.svg_builder.shape(shape);
+  fn style(&mut self, style: ModuleStyle) -> &mut Self {
+    self.svg_builder.style(style);
     self
   }
 
@@ -131,11 +131,6 @@ impl Builder for ImageBuilder {
 
   fn image_position(&mut self, x: f64, y: f64) -> &mut Self {
     self.svg_builder.image_position(x, y);
-    self
-  }
-
-  fn shape_color<C: Into<Color>>(&mut self, shape: Shape, color: C) -> &mut Self {
-    self.svg_builder.shape_color(shape, color);
     self
   }
 }
@@ -182,7 +177,7 @@ impl ImageBuilder {
     self
       .to_pixmap(qr)
       .save_png(file)
-      .map_err(|err| ImageError::IoError(Error::new(ErrorKind::Other, err.to_string())))
+      .map_err(|err| ImageError::IoError(Error::error(err.to_string())))
   }
 
   /// Saves the image for a QRCode in a byte buffer

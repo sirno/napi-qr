@@ -123,8 +123,10 @@ export const enum Version {
 }
 export declare function qr(content: string): Array<number>;
 export declare function qrSvg(content: string, options: SvgOptions): string;
+export declare class ModuleStyle {
+  constructor(shape: Shape, scale: number, color?: string | undefined | null);
+}
 export declare class SvgOptions {
-  shape: Shape;
   margin: number;
   ecl?: ECL;
   version?: Version;
@@ -133,6 +135,8 @@ export declare class SvgOptions {
   imageSize: Array<number>;
   imagePosition: Array<number>;
   constructor();
+  /** Update the module style of the QRCode. */
+  set style(moduleStyle: ModuleStyle);
   /** Updates the module color of the QRCode. Tales a string in the format `#RRGGBB[AA]`. */
   set moduleColor(moduleColor: string);
   /** Updates the background color of the QRCode. Tales a string in the format `#RRGGBB[AA]`. */

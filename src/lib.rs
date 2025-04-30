@@ -72,6 +72,7 @@
 
 use napi_derive::napi;
 
+pub use crate::convert::ModuleStyle;
 pub use crate::datamasking::Mask;
 pub use crate::ecl::ECL;
 pub use crate::encode::Mode;
@@ -102,7 +103,7 @@ mod tests;
 
 #[napi]
 pub struct SvgOptions {
-  pub shape: convert::Shape,
+  style: ModuleStyle,
   module_color: Vec<u8>,
   pub margin: u32,
 
@@ -129,7 +130,7 @@ impl SvgOptions {
   #[napi(constructor)]
   pub fn new() -> Self {
     Self {
-      shape: convert::Shape::Square,
+      style: ModuleStyle::default(),
       module_color: vec![0, 0, 0, 255],
       margin: 4,
 
@@ -161,6 +162,12 @@ impl SvgOptions {
     }
 
     color
+  }
+
+  /// Update the module style of the QRCode.
+  #[napi(setter)]
+  pub fn style(&mut self, module_style: &ModuleStyle) {
+    self.style = module_style.clone();
   }
 
   /// Updates the module color of the QRCode. Tales a string in the format `#RRGGBB[AA]`.
@@ -206,7 +213,7 @@ pub fn qr_svg(content: String, options: &SvgOptions) -> String {
   let qrcode = QRCode::new(content.as_bytes(), options.ecl, options.version, None, None);
 
   let mut builder = SvgBuilder::default();
-  builder.shape(options.shape);
+  builder.style(options.style.clone());
   builder.margin(options.margin as usize);
   builder.background_color(options.background_color.clone());
   builder.module_color(options.module_color.clone());

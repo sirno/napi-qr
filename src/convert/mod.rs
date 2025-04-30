@@ -1,13 +1,12 @@
 //! Converts a [`crate::QRCode`] to image or SVG you will need to activate associated feature flag
 
 pub mod svg;
-
 use svg::SvgError;
 
 pub mod image;
 use image::ImageError;
 
-use crate::{Module, ModuleType};
+use crate::Module;
 use napi_derive::napi;
 
 /// Converts a position to a module svg
@@ -16,7 +15,7 @@ use napi_derive::napi;
 /// For the square shape, the svg is `M{x},{y}h1v1h-1`
 ///
 /// ```rust
-/// # use fast_qr::Module;
+/// # use fast_qr::ModuleStyle;
 /// fn square(y: usize, x: usize, _module: Module) -> String {
 ///     format!("M{x},{y}h1v1h-1")
 /// }
@@ -41,10 +40,12 @@ pub enum Shape {
   Diamond,
 }
 
-pub struct ModuleShape {
+#[napi]
+#[derive(Clone, Debug)]
+pub struct ModuleStyle {
   shape: Shape,
   scale: f64,
-  r#type: ModuleType,
+  color: Option<Color>,
 }
 
 impl From<Shape> for usize {
@@ -89,16 +90,56 @@ impl From<Shape> for &str {
   }
 }
 
-impl Shape {
+#[napi]
+impl ModuleStyle {
+  #[napi(constructor)]
+  pub fn new(shape: Shape, scale: f64, color: Option<String>) -> Self {
+    Self {
+      shape,
+      scale,
+      color: color.map(Color::from),
+    }
+  }
+
+  pub const fn default() -> Self {
+    Self {
+      shape: Shape::Square,
+      scale: 1.,
+      color: None,
+    }
+  }
+
+  pub fn get_color(&self) -> &Option<Color> {
+    &self.color
+  }
+
   pub fn module_fn(&self, y: usize, x: usize, _: Module) -> String {
-    match self {
-      Shape::Square => format!("M{x},{y}h1v1h-1"),
-      Shape::Circle => format!("M{},{y}.5a.5,.5 0 1,1 0,-.1", x + 1),
+    match self.shape {
+      Shape::Square => {
+        let offset = (1. - self.scale) / 2.;
+        let scale = self.scale;
+
+        format!(
+          "M{:.2},{:.2}h{scale}-{scale}",
+          x as f64 + offset,
+          y as f64 + offset,
+        )
+      }
+      Shape::Circle => {
+        let scale = self.scale / 2.;
+        format!("M{},{y}.5a{scale:.2},{scale:.2} 0 1,1 0,-.1", x + 1)
+      }
       Shape::RoundedSquare => format!("M{x}.2,{y}.2 {x}.8,{y}.2 {x}.8,{y}.8 {x}.2,{y}.8z"),
       Shape::Vertical => format!("M{x}.1,{y}h.8v1h-.8"),
       Shape::Horizontal => format!("M{x},{y}.1h1v.8h-1"),
       Shape::Diamond => format!("M{x}.5,{y}l.5,.5l-.5,.5l-.5,-.5z"),
     }
+  }
+}
+
+impl Default for ModuleStyle {
+  fn default() -> Self {
+    Self::default()
   }
 }
 
@@ -168,6 +209,7 @@ pub fn rgba2hex(color: [u8; 4]) -> String {
 }
 
 /// Allows to take String, string slices, arrays or slices of u8 (3 or 4) to create a [Color]
+#[derive(Clone, Debug)]
 pub struct Color(pub String);
 
 impl Color {
@@ -228,10 +270,8 @@ pub trait Builder {
   fn module_color<C: Into<Color>>(&mut self, module_color: C) -> &mut Self;
   /// Updates background color (default: #FFFFFF)
   fn background_color<C: Into<Color>>(&mut self, background_color: C) -> &mut Self;
-  /// Adds a shape to the shapes list
-  fn shape(&mut self, shape: Shape) -> &mut Self;
-  /// Add a shape to the shapes list with a specific color
-  fn shape_color<C: Into<Color>>(&mut self, shape: Shape, color: C) -> &mut Self;
+  /// Adds a shape style to the shapes list
+  fn style(&mut self, style: ModuleStyle) -> &mut Self;
 
   // Manages the image part
 

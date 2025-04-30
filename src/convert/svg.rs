@@ -23,17 +23,12 @@
 
 use crate::{QRCode, Version};
 
-use super::{Builder, Color, ImageBackgroundShape, Shape};
+use super::{Builder, Color, ImageBackgroundShape, ModuleStyle, Shape};
 
 /// Builder for svg, can set shape, margin, background_color, dot_color
 pub struct SvgBuilder {
-  /// Command vector allows predefined or custom shapes
-  /// The default is square, commands can be added using `.shape()`
-  commands: Vec<Shape>,
-  /// Commands can also have a custom color
-  /// The default is `dot_color`, commands with specific colors can be
-  /// added using `.shape_color()`
-  command_colors: Vec<Option<Color>>,
+  /// Styles vector allows to set multiple style definitions
+  styles: Vec<ModuleStyle>,
   /// The margin for the svg, default is 4
   margin: usize,
   /// The background color for the svg, default is #FFFFFF
@@ -72,8 +67,7 @@ impl Default for SvgBuilder {
       background_color: [255; 4].into(),
       dot_color: [0, 0, 0, 255].into(),
       margin: 4,
-      commands: Vec::new(),
-      command_colors: Vec::new(),
+      styles: Vec::new(),
 
       // Image Embedding
       image: None,
@@ -102,15 +96,8 @@ impl Builder for SvgBuilder {
     self
   }
 
-  fn shape(&mut self, shape: Shape) -> &mut Self {
-    self.commands.push(shape);
-    self.command_colors.push(None);
-    self
-  }
-
-  fn shape_color<C: Into<Color>>(&mut self, shape: Shape, color: C) -> &mut Self {
-    self.commands.push(shape);
-    self.command_colors.push(Some(color.into()));
+  fn style(&mut self, style: ModuleStyle) -> &mut Self {
+    self.styles.push(style);
     self
   }
 
@@ -209,7 +196,7 @@ impl SvgBuilder {
       border_size -= 1f64;
     }
 
-    placed_coord_x = placed_coord_x / 2f64;
+    placed_coord_x /= 2f64;
 
     let mut placed_coord = (placed_coord_x, placed_coord_x);
 
@@ -233,7 +220,7 @@ impl SvgBuilder {
       .replace("{0}", &placed_coord.0.to_string())
       .replace("{1}", &placed_coord.1.to_string())
       .replace("{2}", &border_size.to_string())
-      .replace("{3}", &self.image_background_color.to_str());
+      .replace("{3}", self.image_background_color.to_str());
 
     out.push_str(&format);
 
@@ -249,22 +236,16 @@ impl SvgBuilder {
   }
 
   fn path(&self, qr: &QRCode) -> String {
-    const DEFAULT_COMMAND: [Shape; 1] = [Shape::Square];
-    const DEFAULT_COMMAND_COLOR: [Option<Color>; 1] = [None];
+    const DEFAULT_COMMAND: [ModuleStyle; 1] = [ModuleStyle::default()];
 
     // TODO: cleanup this basic logic
-    let command_colors: &[Option<Color>] = if !self.commands.is_empty() {
-      &self.command_colors
-    } else {
-      &DEFAULT_COMMAND_COLOR
-    };
-    let commands: &[Shape] = if !self.commands.is_empty() {
-      &self.commands
+    let styles: &[ModuleStyle] = if !self.styles.is_empty() {
+      &self.styles
     } else {
       &DEFAULT_COMMAND
     };
 
-    let mut paths = vec![String::with_capacity(10 * qr.size * qr.size); commands.len()];
+    let mut paths = vec![String::with_capacity(10 * qr.size * qr.size); styles.len()];
     for path in paths.iter_mut() {
       path.push_str(r#"<path d=""#);
     }
@@ -276,24 +257,24 @@ impl SvgBuilder {
           continue;
         }
 
-        for (i, command) in commands.iter().enumerate() {
-          paths[i].push_str(&command.module_fn(y + self.margin, x + self.margin, cell));
+        for (i, style) in styles.iter().enumerate() {
+          paths[i].push_str(&style.module_fn(y + self.margin, x + self.margin, cell));
         }
       }
     }
 
-    for (i, &command) in commands.iter().enumerate() {
-      let command_color = command_colors[i].as_ref().unwrap_or(&self.dot_color);
+    for (i, style) in styles.iter().enumerate() {
+      let style_color = style.get_color().as_ref().unwrap_or(&self.dot_color);
       // Allows to compare if two function pointers are the same
       // This works because there is no notion of Generics for `rounded_square`
-      if let Shape::RoundedSquare = command {
+      if let Shape::RoundedSquare = style.shape {
         paths[i].push_str(&format!(
           r##"" stroke-width=".3" stroke-linejoin="round" stroke="{}"##,
-          command_color.to_str()
+          style_color.to_str()
         ));
       }
 
-      paths[i].push_str(&format!(r#"" fill="{}"/>"#, command_color.to_str()));
+      paths[i].push_str(&format!(r#"" fill="{}"/>"#, style_color.to_str()));
     }
 
     paths.join("")
