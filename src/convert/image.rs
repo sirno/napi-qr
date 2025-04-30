@@ -172,12 +172,12 @@ impl ImageBuilder {
 
   /// Saves the image for a QRCode to a file
   pub fn to_file(&self, qr: &QRCode, file: &str) -> Result<(), ImageError> {
-    use io::{Error, ErrorKind};
+    use io::Error;
 
     self
       .to_pixmap(qr)
       .save_png(file)
-      .map_err(|err| ImageError::IoError(Error::error(err.to_string())))
+      .map_err(|err| ImageError::IoError(Error::other(err.to_string())))
   }
 
   /// Saves the image for a QRCode in a byte buffer
