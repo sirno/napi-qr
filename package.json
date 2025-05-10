@@ -101,5 +101,20 @@
     "semi": true,
     "trailingComma": "all"
   },
-  "packageManager": "yarn@4.9.1"
+  "packageManager": "yarn@4.9.1",
+  "optionalDependencies": {
+    "napi-qr-win32-x64-msvc": "0.1.1-0",
+    "napi-qr-darwin-x64": "0.1.1-0",
+    "napi-qr-linux-x64-gnu": "0.1.1-0",
+    "napi-qr-linux-x64-musl": "0.1.1-0",
+    "napi-qr-linux-arm64-gnu": "0.1.1-0",
+    "napi-qr-win32-ia32-msvc": "0.1.1-0",
+    "napi-qr-linux-arm-gnueabihf": "0.1.1-0",
+    "napi-qr-darwin-arm64": "0.1.1-0",
+    "napi-qr-android-arm64": "0.1.1-0",
+    "napi-qr-freebsd-x64": "0.1.1-0",
+    "napi-qr-linux-arm64-musl": "0.1.1-0",
+    "napi-qr-win32-arm64-msvc": "0.1.1-0",
+    "napi-qr-android-arm-eabi": "0.1.1-0"
+  }
 }
