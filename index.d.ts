@@ -17,6 +17,8 @@ export const enum Shape {
   Horizontal = "Horizontal",
   /** Diamond Shape */
   Diamond = "Diamond",
+  /** Connected Shape */
+  Connected = "Connected",
 }
 /** Different possible image background shapes */
 export const enum ImageBackgroundShape {

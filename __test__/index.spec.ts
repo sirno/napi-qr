@@ -1,6 +1,11 @@
 import test from "ava";
 
 import { qr, qrPng, qrSvg, Shape, SvgOptions, ModuleStyle } from "../index";
+import fs from "fs";
+
+function writeTestFile(data: string) {
+  fs.writeFileSync("test.svg", data, { flush: true });
+}
 
 test("test bitmap qr", (t) => {
   const target = "Hello QR Coded Planet";
@@ -11,7 +16,7 @@ test("test bitmap qr", (t) => {
 test("test default qr", (t) => {
   const target = "Hello QR Coded Planet";
   const options = new SvgOptions();
-  qrSvg(target, options);
+  const svg = qrSvg(target, options);
   t.true(true, "pass");
 });
 
@@ -21,7 +26,7 @@ test("test diamond qr", (t) => {
   const options = new SvgOptions();
   options.style = module_style;
   options.margin = 5;
-  qrSvg(target, options);
+  const svg = qrSvg(target, options);
   t.true(true, "pass");
 });
 
@@ -31,7 +36,6 @@ test("test circle qr", (t) => {
   const options = new SvgOptions();
   options.style = module_style;
   const svg = qrSvg(target, options);
-  t.log(svg);
   t.true(true, "pass");
 });
 
@@ -40,7 +44,18 @@ test("test rounded square qr", (t) => {
   const module_style = new ModuleStyle(Shape.RoundedSquare, 1);
   const options = new SvgOptions();
   options.style = module_style;
-  qrSvg(target, options);
+  const svg = qrSvg(target, options);
+  t.true(true, "pass");
+});
+
+test("test connected qr", (t) => {
+  const target = "Hello QR Coded Planet";
+  const module_style = new ModuleStyle(Shape.Connected, 1);
+  const options = new SvgOptions();
+  options.style = module_style;
+  const svg = qrSvg(target, options);
+  writeTestFile(svg);
+  // t.log(svg);
   t.true(true, "pass");
 });
 

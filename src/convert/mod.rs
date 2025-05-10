@@ -1,7 +1,7 @@
-//! Converts a [`crate::QRCode`] to image or SVG you will need to activate associated feature flag
+//! Converts a [`crate::QRCode`] to image or SVG
 
 pub mod svg;
-use svg::SvgError;
+use svg::{Neighborhood, SvgError};
 
 pub mod image;
 use image::ImageError;
@@ -16,11 +16,11 @@ use napi_derive::napi;
 ///
 /// ```rust
 /// # use fast_qr::ModuleStyle;
-/// fn square(y: usize, x: usize, _module: Module) -> String {
+/// fn square(y: usize, x: usize, _module: Module, _n: Neighborhood) -> String {
 ///     format!("M{x},{y}h1v1h-1")
 /// }
 /// ```
-pub type ModuleFunction = fn(usize, usize, Module) -> String;
+pub type ModuleFunction = fn(usize, usize, Module, &Neighborhood) -> String;
 
 /// Different possible Shapes to represent modules in a [`crate::QRCode`]
 #[napi(string_enum)]
@@ -38,6 +38,8 @@ pub enum Shape {
   Horizontal,
   /// Diamond Shape
   Diamond,
+  /// Connected Shape
+  Connected,
 }
 
 #[napi]
@@ -57,6 +59,7 @@ impl From<Shape> for usize {
       Shape::Vertical => 3,
       Shape::Horizontal => 4,
       Shape::Diamond => 5,
+      Shape::Connected => 6,
     }
   }
 }
@@ -71,6 +74,7 @@ impl From<String> for Shape {
       "vertical" => Shape::Vertical,
       "horizontal" => Shape::Horizontal,
       "diamond" => Shape::Diamond,
+      "connected" => Shape::Connected,
 
       _ => Shape::Square,
     }
@@ -86,6 +90,7 @@ impl From<Shape> for &str {
       Shape::Vertical => "vertical",
       Shape::Horizontal => "horizontal",
       Shape::Diamond => "diamond",
+      Shape::Connected => "connected",
     }
   }
 }
@@ -113,9 +118,15 @@ impl ModuleStyle {
     &self.color
   }
 
-  pub fn module_fn(&self, y: usize, x: usize, m: Module) -> String {
-    if m.module_type() == ModuleType::FinderPattern || m.module_type() == ModuleType::Alignment {
-      return format!("M{x},{y}h1v1h-1");
+  pub fn module_fn(&self, y: usize, x: usize, m: Module, n: &Neighborhood) -> String {
+    match m.module_type() {
+      ModuleType::FinderPattern => {
+        return format!("M{x},{y}h1v1h-1z");
+      }
+      ModuleType::Alignment => {
+        return format!("M{x},{y}h1v1h-1z`");
+      }
+      _ => {}
     }
 
     match self.shape {
@@ -123,21 +134,74 @@ impl ModuleStyle {
         let offset = (1. - self.scale) / 2.;
         let scale = self.scale;
 
-        format!(
-          "M{:.2},{:.2}h{scale:.2}-{scale:.2}",
+        return format!(
+          "M{:.2},{:.2}h{scale:.2}v{scale:.2}h-{scale:.2}z",
           x as f64 + offset,
           y as f64 + offset,
-        )
+        );
       }
       Shape::Circle => {
         let scale = self.scale / 2.;
-        format!("M{},{y}.5a{scale:.2},{scale:.2} 0 1,1 0,-.1", x + 1)
+        return format!("M{},{y}.5a{scale:.2},{scale:.2} 0 1,1 0,-.1", x + 1);
       }
-      Shape::RoundedSquare => format!("M{x}.2,{y}.2 {x}.8,{y}.2 {x}.8,{y}.8 {x}.2,{y}.8z"),
-      Shape::Vertical => format!("M{x}.1,{y}h.8v1h-.8"),
-      Shape::Horizontal => format!("M{x},{y}.1h1v.8h-1"),
-      Shape::Diamond => format!("M{x}.5,{y}l.5,.5l-.5,.5l-.5,-.5z"),
+      Shape::RoundedSquare => {
+        let s = self.scale / 2.;
+        let x = x as f64 + s;
+        let y = y as f64 + s;
+        return format!("M{x:.2},{y:.2}h{s:.2}v{s:.2}h-{s:.2}v-{s:.2}h-{s:.2}v-{s:.2}h{s:.2}");
+      }
+      Shape::Vertical => return format!("M{x}.1,{y}h.8v1h-.8"),
+      Shape::Horizontal => return format!("M{x},{y}.1h1v.8h-1"),
+      Shape::Diamond => {
+        let s = self.scale / 2.;
+        let x = x as f64 + 0.5;
+        let y = y as f64 + 0.5 - s;
+        return format!("M{x:.2},{y:.2}l{s:.2},{s:.2}l-{s:.2},{s:.2}l-{s:.2},-{s:.2}l{s:.2},-{s:.2}l{s:.2},{s:.2}z");
+      }
+      _ => {}
     }
+
+    let masked = n.mask(0b10101010);
+
+    if masked == 0 {
+      return format!("M{x},{y}.5 a0.5 0.5,0,0,0,1,0a0.5 0.5,0,0,0,-1,0z");
+    }
+
+    // corners
+    if masked == 0b10100000 {
+      return format!("M{x} {}h1a1 1,0,0,0,-1 -1z", y + 1);
+    }
+
+    if masked == 0b00101000 {
+      return format!("M{} {}v-1a1 1,0,0,0,-1 1z", x + 1, y + 1);
+    }
+
+    if masked == 0b00001010 {
+      return format!("M{} {y}h-1a1 1,0,0,0,1 1z", x + 1);
+    }
+
+    if masked == 0b10000010 {
+      return format!("M{x} {y}v1a1 1,0,0,0,1 -1z");
+    }
+
+    // ends
+    if masked == 0b10000000 {
+      return format!("M{x} {y}v1h0.5a0.5 0.5,0,0,0,0 -1z");
+    }
+
+    if masked == 0b00100000 {
+      return format!("M{x} {}h1v-0.5a0.5 -0.5,0,0,0,-1 0z", y + 1);
+    }
+
+    if masked == 0b00001000 {
+      return format!("M{} {}v-1h-0.5a0.5 0.5,0,0,0,0 1z", x + 1, y + 1);
+    }
+
+    if masked == 0b00000010 {
+      return format!("M{} {y}h-1v0.5a0.5 0.5,0,0,0,1 0z", x + 1);
+    }
+
+    format!("M{x},{y}h1v1h-1z")
   }
 }
 

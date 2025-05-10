@@ -235,6 +235,50 @@ impl SvgBuilder {
     out
   }
 
+  /// Return the neighborhood of a module
+  ///
+  /// The neighborhood should be encoded as follows:
+  ///
+  /// 0b00000001: top left
+  /// 0b00000010: top
+  /// 0b00000100: top right
+  /// 0b00001000: right
+  /// 0b00010000: bottom right
+  /// 0b00100000: bottom
+  /// 0b01000000: bottom left
+  /// 0b10000000: left
+  ///
+  fn get_neighborhood(&self, qr: &QRCode, x: usize, y: usize) -> Neighborhood {
+    let mut neighbors = 0u8;
+
+    if x > 0 && y > 0 && qr[y - 1][x - 1].value() {
+      neighbors |= 0b00000001;
+    }
+    if y > 0 && qr[y - 1][x].value() {
+      neighbors |= 0b00000010;
+    }
+    if x < qr.size - 1 && y > 0 && qr[y - 1][x + 1].value() {
+      neighbors |= 0b00000100;
+    }
+    if x < qr.size - 1 && qr[y][x + 1].value() {
+      neighbors |= 0b00001000;
+    }
+    if x < qr.size - 1 && y < qr.size - 1 && qr[y + 1][x + 1].value() {
+      neighbors |= 0b00010000;
+    }
+    if y < qr.size - 1 && qr[y + 1][x].value() {
+      neighbors |= 0b00100000;
+    }
+    if x > 0 && y < qr.size - 1 && qr[y + 1][x - 1].value() {
+      neighbors |= 0b01000000;
+    }
+    if x > 0 && qr[y][x - 1].value() {
+      neighbors |= 0b10000000;
+    }
+
+    Neighborhood(neighbors)
+  }
+
   fn path(&self, qr: &QRCode) -> String {
     const DEFAULT_COMMAND: [ModuleStyle; 1] = [ModuleStyle::default()];
 
@@ -245,11 +289,10 @@ impl SvgBuilder {
       &DEFAULT_COMMAND
     };
 
-    let mut paths = vec![String::with_capacity(10 * qr.size * qr.size); styles.len()];
+    let mut paths = vec![String::with_capacity(20 * qr.size * qr.size); styles.len()];
     for path in paths.iter_mut() {
       path.push_str(r#"<path d=""#);
     }
-
     for y in 0..qr.size {
       let line = &qr[y];
       for (x, &cell) in line.iter().enumerate() {
@@ -257,8 +300,10 @@ impl SvgBuilder {
           continue;
         }
 
+        let neighbors = self.get_neighborhood(qr, x, y);
+
         for (i, style) in styles.iter().enumerate() {
-          paths[i].push_str(&style.module_fn(y + self.margin, x + self.margin, cell));
+          paths[i].push_str(&style.module_fn(y + self.margin, x + self.margin, cell, &neighbors));
         }
       }
     }
@@ -314,5 +359,38 @@ impl SvgBuilder {
     f.write_all(out.as_bytes()).map_err(SvgError::IoError)?;
 
     Ok(())
+  }
+}
+
+pub enum Position {
+  TopLeft,
+  Top,
+  TopRight,
+  Right,
+  BottomRight,
+  Bottom,
+  BottomLeft,
+  Left,
+}
+
+/// Neighborhood of a module
+///
+/// 0b00000001: top left
+/// 0b00000010: top
+/// 0b00000100: top right
+/// 0b00001000: right
+/// 0b00010000: bottom right
+/// 0b00100000: bottom
+/// 0b01000000: bottom left
+/// 0b10000000: left
+pub struct Neighborhood(u8);
+
+impl Neighborhood {
+  pub fn get(&self, position: Position) -> bool {
+    (self.0 & (1 << (position as u8))) != 0
+  }
+
+  pub fn mask(&self, mask: u8) -> u8 {
+    self.0 & mask
   }
 }
