@@ -114,7 +114,7 @@ impl ModuleStyle {
   }
 
   pub fn module_fn(&self, y: usize, x: usize, m: Module) -> String {
-    if m.module_type() == ModuleType::FinderPattern {
+    if m.module_type() == ModuleType::FinderPattern || m.module_type() == ModuleType::Alignment {
       return format!("M{x},{y}h1v1h-1");
     }
 

@@ -278,5 +278,6 @@ pub fn qr_png(content: String, options: &SvgOptions) -> Vec<u8> {
 
   qrcode
     .map(|qrcode| builder.to_bytes(&qrcode))
-    .unwrap().unwrap_or_default()
+    .unwrap()
+    .unwrap_or_default()
 }
