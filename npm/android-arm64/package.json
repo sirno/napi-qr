@@ -1,6 +1,6 @@
 {
   "name": "@sirno/napi-qr-android-arm64",
-  "version": "0.1.3",
+  "version": "0.1.4-0",
   "os": [
     "android"
   ],
