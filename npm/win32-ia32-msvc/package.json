@@ -1,6 +1,6 @@
 {
   "name": "@sirno/napi-qr-win32-ia32-msvc",
-  "version": "0.1.4-0",
+  "version": "0.1.4",
   "os": [
     "win32"
   ],
