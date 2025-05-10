@@ -6,7 +6,7 @@ use svg::SvgError;
 pub mod image;
 use image::ImageError;
 
-use crate::Module;
+use crate::{Module, ModuleType};
 use napi_derive::napi;
 
 /// Converts a position to a module svg
@@ -113,7 +113,11 @@ impl ModuleStyle {
     &self.color
   }
 
-  pub fn module_fn(&self, y: usize, x: usize, _: Module) -> String {
+  pub fn module_fn(&self, y: usize, x: usize, m: Module) -> String {
+    if m.module_type() == ModuleType::FinderPattern {
+      return format!("M{x},{y}h1v1h-1");
+    }
+
     match self.shape {
       Shape::Square => {
         let offset = (1. - self.scale) / 2.;
