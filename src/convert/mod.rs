@@ -120,7 +120,7 @@ impl ModuleStyle {
         let scale = self.scale;
 
         format!(
-          "M{:.2},{:.2}h{scale}-{scale}",
+          "M{:.2},{:.2}h{scale:.2}-{scale:.2}",
           x as f64 + offset,
           y as f64 + offset,
         )
