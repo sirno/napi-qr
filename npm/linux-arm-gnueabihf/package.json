@@ -1,6 +1,6 @@
 {
   "name": "napi-qr-linux-arm-gnueabihf",
-  "version": "0.1.1-1",
+  "version": "0.1.1",
   "os": [
     "linux"
   ],
