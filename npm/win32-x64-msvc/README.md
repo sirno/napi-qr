@@ -1,3 +1,3 @@
-# `napi-qr-win32-x64-msvc`
+# `@sirno/napi-qr-win32-x64-msvc`
 
-This is the **x86_64-pc-windows-msvc** binary for `napi-qr`
+This is the **x86_64-pc-windows-msvc** binary for `@sirno/napi-qr`

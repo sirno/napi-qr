@@ -37,7 +37,7 @@ switch (platform) {
           if (localFileExisted) {
             nativeBinding = require("./napi-qr.android-arm64.node");
           } else {
-            nativeBinding = require("napi-qr-android-arm64");
+            nativeBinding = require("@sirno/napi-qr-android-arm64");
           }
         } catch (e) {
           loadError = e;
@@ -49,7 +49,7 @@ switch (platform) {
           if (localFileExisted) {
             nativeBinding = require("./napi-qr.android-arm-eabi.node");
           } else {
-            nativeBinding = require("napi-qr-android-arm-eabi");
+            nativeBinding = require("@sirno/napi-qr-android-arm-eabi");
           }
         } catch (e) {
           loadError = e;
@@ -67,7 +67,7 @@ switch (platform) {
           if (localFileExisted) {
             nativeBinding = require("./napi-qr.win32-x64-msvc.node");
           } else {
-            nativeBinding = require("napi-qr-win32-x64-msvc");
+            nativeBinding = require("@sirno/napi-qr-win32-x64-msvc");
           }
         } catch (e) {
           loadError = e;
@@ -79,7 +79,7 @@ switch (platform) {
           if (localFileExisted) {
             nativeBinding = require("./napi-qr.win32-ia32-msvc.node");
           } else {
-            nativeBinding = require("napi-qr-win32-ia32-msvc");
+            nativeBinding = require("@sirno/napi-qr-win32-ia32-msvc");
           }
         } catch (e) {
           loadError = e;
@@ -91,7 +91,7 @@ switch (platform) {
           if (localFileExisted) {
             nativeBinding = require("./napi-qr.win32-arm64-msvc.node");
           } else {
-            nativeBinding = require("napi-qr-win32-arm64-msvc");
+            nativeBinding = require("@sirno/napi-qr-win32-arm64-msvc");
           }
         } catch (e) {
           loadError = e;
@@ -107,7 +107,7 @@ switch (platform) {
       if (localFileExisted) {
         nativeBinding = require("./napi-qr.darwin-universal.node");
       } else {
-        nativeBinding = require("napi-qr-darwin-universal");
+        nativeBinding = require("@sirno/napi-qr-darwin-universal");
       }
       break;
     } catch {}
@@ -118,7 +118,7 @@ switch (platform) {
           if (localFileExisted) {
             nativeBinding = require("./napi-qr.darwin-x64.node");
           } else {
-            nativeBinding = require("napi-qr-darwin-x64");
+            nativeBinding = require("@sirno/napi-qr-darwin-x64");
           }
         } catch (e) {
           loadError = e;
@@ -130,7 +130,7 @@ switch (platform) {
           if (localFileExisted) {
             nativeBinding = require("./napi-qr.darwin-arm64.node");
           } else {
-            nativeBinding = require("napi-qr-darwin-arm64");
+            nativeBinding = require("@sirno/napi-qr-darwin-arm64");
           }
         } catch (e) {
           loadError = e;
@@ -149,7 +149,7 @@ switch (platform) {
       if (localFileExisted) {
         nativeBinding = require("./napi-qr.freebsd-x64.node");
       } else {
-        nativeBinding = require("napi-qr-freebsd-x64");
+        nativeBinding = require("@sirno/napi-qr-freebsd-x64");
       }
     } catch (e) {
       loadError = e;
@@ -164,7 +164,7 @@ switch (platform) {
             if (localFileExisted) {
               nativeBinding = require("./napi-qr.linux-x64-musl.node");
             } else {
-              nativeBinding = require("napi-qr-linux-x64-musl");
+              nativeBinding = require("@sirno/napi-qr-linux-x64-musl");
             }
           } catch (e) {
             loadError = e;
@@ -175,7 +175,7 @@ switch (platform) {
             if (localFileExisted) {
               nativeBinding = require("./napi-qr.linux-x64-gnu.node");
             } else {
-              nativeBinding = require("napi-qr-linux-x64-gnu");
+              nativeBinding = require("@sirno/napi-qr-linux-x64-gnu");
             }
           } catch (e) {
             loadError = e;
@@ -189,7 +189,7 @@ switch (platform) {
             if (localFileExisted) {
               nativeBinding = require("./napi-qr.linux-arm64-musl.node");
             } else {
-              nativeBinding = require("napi-qr-linux-arm64-musl");
+              nativeBinding = require("@sirno/napi-qr-linux-arm64-musl");
             }
           } catch (e) {
             loadError = e;
@@ -200,7 +200,7 @@ switch (platform) {
             if (localFileExisted) {
               nativeBinding = require("./napi-qr.linux-arm64-gnu.node");
             } else {
-              nativeBinding = require("napi-qr-linux-arm64-gnu");
+              nativeBinding = require("@sirno/napi-qr-linux-arm64-gnu");
             }
           } catch (e) {
             loadError = e;
@@ -214,7 +214,7 @@ switch (platform) {
             if (localFileExisted) {
               nativeBinding = require("./napi-qr.linux-arm-musleabihf.node");
             } else {
-              nativeBinding = require("napi-qr-linux-arm-musleabihf");
+              nativeBinding = require("@sirno/napi-qr-linux-arm-musleabihf");
             }
           } catch (e) {
             loadError = e;
@@ -225,7 +225,7 @@ switch (platform) {
             if (localFileExisted) {
               nativeBinding = require("./napi-qr.linux-arm-gnueabihf.node");
             } else {
-              nativeBinding = require("napi-qr-linux-arm-gnueabihf");
+              nativeBinding = require("@sirno/napi-qr-linux-arm-gnueabihf");
             }
           } catch (e) {
             loadError = e;
@@ -239,7 +239,7 @@ switch (platform) {
             if (localFileExisted) {
               nativeBinding = require("./napi-qr.linux-riscv64-musl.node");
             } else {
-              nativeBinding = require("napi-qr-linux-riscv64-musl");
+              nativeBinding = require("@sirno/napi-qr-linux-riscv64-musl");
             }
           } catch (e) {
             loadError = e;
@@ -250,7 +250,7 @@ switch (platform) {
             if (localFileExisted) {
               nativeBinding = require("./napi-qr.linux-riscv64-gnu.node");
             } else {
-              nativeBinding = require("napi-qr-linux-riscv64-gnu");
+              nativeBinding = require("@sirno/napi-qr-linux-riscv64-gnu");
             }
           } catch (e) {
             loadError = e;
@@ -263,7 +263,7 @@ switch (platform) {
           if (localFileExisted) {
             nativeBinding = require("./napi-qr.linux-s390x-gnu.node");
           } else {
-            nativeBinding = require("napi-qr-linux-s390x-gnu");
+            nativeBinding = require("@sirno/napi-qr-linux-s390x-gnu");
           }
         } catch (e) {
           loadError = e;

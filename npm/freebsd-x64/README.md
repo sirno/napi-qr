@@ -1,3 +1,3 @@
-# `napi-qr-freebsd-x64`
+# `@sirno/napi-qr-freebsd-x64`
 
-This is the **x86_64-unknown-freebsd** binary for `napi-qr`
+This is the **x86_64-unknown-freebsd** binary for `@sirno/napi-qr`

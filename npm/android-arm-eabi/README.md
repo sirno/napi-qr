@@ -1,3 +1,3 @@
-# `napi-qr-android-arm-eabi`
+# `@sirno/napi-qr-android-arm-eabi`
 
-This is the **armv7-linux-androideabi** binary for `napi-qr`
+This is the **armv7-linux-androideabi** binary for `@sirno/napi-qr`

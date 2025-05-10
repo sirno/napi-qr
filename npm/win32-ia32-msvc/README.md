@@ -1,3 +1,3 @@
-# `napi-qr-win32-ia32-msvc`
+# `@sirno/napi-qr-win32-ia32-msvc`
 
-This is the **i686-pc-windows-msvc** binary for `napi-qr`
+This is the **i686-pc-windows-msvc** binary for `@sirno/napi-qr`

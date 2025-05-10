@@ -1,3 +1,3 @@
-# `napi-qr-darwin-x64`
+# `@sirno/napi-qr-darwin-x64`
 
-This is the **x86_64-apple-darwin** binary for `napi-qr`
+This is the **x86_64-apple-darwin** binary for `@sirno/napi-qr`
