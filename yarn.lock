@@ -372,6 +372,7 @@ __metadata:
     "@napi-rs/cli": "npm:^2.18.4"
     "@oxc-node/core": "npm:^0.0.23"
     "@taplo/cli": "npm:^0.7.0"
+    "@types/node": "npm:^22.15.17"
     ava: "npm:^6.2.0"
     chalk: "npm:^5.4.1"
     husky: "npm:^9.1.7"
@@ -406,6 +407,15 @@ __metadata:
   version: 1.0.7
   resolution: "@types/estree@npm:1.0.7"
   checksum: 10c0/be815254316882f7c40847336cd484c3bc1c3e34f710d197160d455dc9d6d050ffbf4c3bc76585dba86f737f020ab20bdb137ebe0e9116b0c86c7c0342221b8c
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^22.15.17":
+  version: 22.15.17
+  resolution: "@types/node@npm:22.15.17"
+  dependencies:
+    undici-types: "npm:~6.21.0"
+  checksum: 10c0/fb92aa10b628683c5b965749f955bc2322485ecb0ea6c2f4cae5f2c7537a16834607e67083a9e9281faaae8d7dee9ada8d6a5c0de9a52c17d82912ef00c0fdd4
   languageName: node
   linkType: hard
 
@@ -2042,6 +2052,13 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10c0/39117e346ff8ebd87ae1510b3a77d5d92dae5a89bde588c747d25da5c146603a99c8ee588c7ef80faaf123d89ed46f6dbd918d534d641083177d5fac38b8a1cb
+  languageName: node
+  linkType: hard
+
+"undici-types@npm:~6.21.0":
+  version: 6.21.0
+  resolution: "undici-types@npm:6.21.0"
+  checksum: 10c0/c01ed51829b10aa72fc3ce64b747f8e74ae9b60eafa19a7b46ef624403508a54c526ffab06a14a26b3120d055e1104d7abe7c9017e83ced038ea5cf52f8d5e04
   languageName: node
   linkType: hard
 
