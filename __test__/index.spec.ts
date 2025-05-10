@@ -1,6 +1,6 @@
 import test from "ava";
 
-import { qr, qrSvg, Shape, SvgOptions, ModuleStyle } from "../index";
+import { qr, qrPng, qrSvg, Shape, SvgOptions, ModuleStyle } from "../index";
 
 test("test bitmap qr", (t) => {
   const target = "Hello QR Coded Planet";
@@ -41,5 +41,12 @@ test("test rounded square qr", (t) => {
   const options = new SvgOptions();
   options.style = module_style;
   qrSvg(target, options);
+  t.true(true, "pass");
+});
+
+test("test default qr image", (t) => {
+  const target = "Hello QR Coded Planet";
+  const options = new SvgOptions();
+  qrPng(target, options);
   t.true(true, "pass");
 });

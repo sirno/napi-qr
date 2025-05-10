@@ -284,7 +284,7 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`);
 }
 
-const { Shape, ModuleStyle, ImageBackgroundShape, ECL, Version, SvgOptions, qr, qrSvg } = nativeBinding;
+const { Shape, ModuleStyle, ImageBackgroundShape, ECL, Version, SvgOptions, qr, qrSvg, qrPng } = nativeBinding;
 
 module.exports.Shape = Shape;
 module.exports.ModuleStyle = ModuleStyle;
@@ -294,3 +294,4 @@ module.exports.Version = Version;
 module.exports.SvgOptions = SvgOptions;
 module.exports.qr = qr;
 module.exports.qrSvg = qrSvg;
+module.exports.qrPng = qrPng;

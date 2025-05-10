@@ -241,3 +241,42 @@ pub fn qr_svg(content: String, options: &SvgOptions) -> String {
     .map(|qrcode| builder.to_str(&qrcode))
     .unwrap_or_default()
 }
+
+#[napi]
+pub fn qr_png(content: String, options: &SvgOptions) -> Vec<u8> {
+  use crate::convert::image::ImageBuilder;
+  use crate::convert::Builder;
+  let qrcode = QRCode::new(content.as_bytes(), options.ecl, options.version, None, None);
+
+  let mut builder = ImageBuilder::default();
+  builder.style(options.style.clone());
+  builder.margin(options.margin as usize);
+  builder.background_color(options.background_color.clone());
+  builder.module_color(options.module_color.clone());
+  if !options.image.is_empty() {
+    builder.image(options.image.clone());
+  }
+
+  builder.image_background_color(options.image_background_color.clone());
+  builder.image_background_shape(options.image_background_shape);
+
+  if options.image_size.len() == 2 {
+    let size = options.image_size[0];
+    let gap = options.image_size[1];
+    builder.image_size(size);
+    builder.image_gap(gap);
+  }
+
+  if options.image_size.len() == 2 {
+    let x = options.image_position[0];
+    let y = options.image_position[1];
+    builder.image_position(x, y);
+  }
+
+  builder.fit_width(1000);
+  builder.fit_height(1000);
+
+  qrcode
+    .map(|qrcode| builder.to_bytes(&qrcode))
+    .unwrap().unwrap_or_default()
+}
