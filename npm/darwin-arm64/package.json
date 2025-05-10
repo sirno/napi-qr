@@ -1,6 +1,6 @@
 {
   "name": "@sirno/napi-qr-darwin-arm64",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "os": [
     "darwin"
   ],

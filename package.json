@@ -1,6 +1,6 @@
 {
   "name": "@sirno/napi-qr",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Napi derived from fast_qr repo",
   "main": "index.js",
   "repository": "git@github.com:sirno/napi-qr.git",
