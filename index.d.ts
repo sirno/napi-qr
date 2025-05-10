@@ -124,7 +124,7 @@ export const enum Version {
   V40 = 39,
 }
 export declare function qr(content: string): Array<number>;
-export declare function qrSvg(content: string, options: SvgOptions): string;
+export declare function qrSvg(content: string, options: SvgOptions): Buffer;
 export declare function qrPng(content: string, options: SvgOptions): Array<number>;
 export declare class ModuleStyle {
   constructor(shape: Shape, scale: number, color?: string | undefined | null);

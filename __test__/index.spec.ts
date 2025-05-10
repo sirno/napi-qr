@@ -27,6 +27,7 @@ test("test diamond qr", (t) => {
   options.style = module_style;
   options.margin = 5;
   const svg = qrSvg(target, options);
+  // writeTestFile(svg);
   t.true(true, "pass");
 });
 
@@ -36,6 +37,7 @@ test("test circle qr", (t) => {
   const options = new SvgOptions();
   options.style = module_style;
   const svg = qrSvg(target, options);
+  // writeTestFile(svg);
   t.true(true, "pass");
 });
 
@@ -45,6 +47,7 @@ test("test rounded square qr", (t) => {
   const options = new SvgOptions();
   options.style = module_style;
   const svg = qrSvg(target, options);
+  // writeTestFile(svg);
   t.true(true, "pass");
 });
 
@@ -54,7 +57,7 @@ test("test connected qr", (t) => {
   const options = new SvgOptions();
   options.style = module_style;
   const svg = qrSvg(target, options);
-  writeTestFile(svg);
+  // writeTestFile(svg);
   // t.log(svg);
   t.true(true, "pass");
 });

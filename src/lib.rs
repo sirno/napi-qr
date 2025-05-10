@@ -80,6 +80,8 @@ pub use crate::module::{Module, ModuleType};
 pub use crate::qr::{QRBuilder, QRCode};
 pub use crate::version::Version;
 
+use napi::bindgen_prelude::Buffer;
+
 mod compact;
 #[doc(hidden)]
 pub mod datamasking;
@@ -207,7 +209,7 @@ pub fn qr(content: String) -> Vec<u8> {
 }
 
 #[napi]
-pub fn qr_svg(content: String, options: &SvgOptions) -> String {
+pub fn qr_svg(content: String, options: &SvgOptions) -> Buffer {
   use crate::convert::svg::SvgBuilder;
   use crate::convert::Builder;
   let qrcode = QRCode::new(content.as_bytes(), options.ecl, options.version, None, None);
@@ -238,8 +240,9 @@ pub fn qr_svg(content: String, options: &SvgOptions) -> String {
   }
 
   qrcode
-    .map(|qrcode| builder.to_str(&qrcode))
+    .map(|qrcode| builder.as_bytes(&qrcode))
     .unwrap_or_default()
+    .into()
 }
 
 #[napi]

@@ -124,7 +124,7 @@ impl ModuleStyle {
         return format!("M{x},{y}h1v1h-1z");
       }
       ModuleType::Alignment => {
-        return format!("M{x},{y}h1v1h-1z`");
+        return format!("M{x},{y}h1v1h-1z");
       }
       _ => {}
     }

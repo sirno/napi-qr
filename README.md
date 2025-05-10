@@ -1,6 +1,9 @@
-# `@napi-rs/package-template`
+# napi-qr
 
-![https://github.com/napi-rs/package-template/actions](https://github.com/napi-rs/package-template/workflows/CI/badge.svg)
+![https://github.com/sirno/napi-qr/actions](https://github.com/sirno/napi-qr/workflows/CI/badge.svg)
+This repository has been mostly derived from
+[](https://github.com/erwanvivien/fast_qr) and is based on the
+[](https://github.com/napi-rs/package-template).
 
 > Template project for writing node packages with napi-rs.
 

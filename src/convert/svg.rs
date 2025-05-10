@@ -289,7 +289,7 @@ impl SvgBuilder {
       &DEFAULT_COMMAND
     };
 
-    let mut paths = vec![String::with_capacity(20 * qr.size * qr.size); styles.len()];
+    let mut paths = vec![String::with_capacity(40 * qr.size * qr.size); styles.len()];
     for path in paths.iter_mut() {
       path.push_str(r#"<path d=""#);
     }
@@ -299,7 +299,6 @@ impl SvgBuilder {
         if !cell.value() {
           continue;
         }
-
         let neighbors = self.get_neighborhood(qr, x, y);
 
         for (i, style) in styles.iter().enumerate() {
@@ -307,6 +306,8 @@ impl SvgBuilder {
         }
       }
     }
+
+    dbg!(qr.size);
 
     for (i, style) in styles.iter().enumerate() {
       let style_color = style.get_color().as_ref().unwrap_or(&self.dot_color);
@@ -346,6 +347,12 @@ impl SvgBuilder {
 
     out.push_str("</svg>");
     out
+  }
+
+  /// Returns the svg for in a buffer
+  pub fn as_bytes(&self, qr: &QRCode) -> Vec<u8> {
+    let svg = self.to_str(qr);
+    svg.into_bytes()
   }
 
   /// Saves the svg for a qr code to a file
