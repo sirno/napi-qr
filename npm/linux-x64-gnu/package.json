@@ -1,6 +1,6 @@
 {
   "name": "@sirno/napi-qr-linux-x64-gnu",
-  "version": "0.1.6-2",
+  "version": "0.1.6-3",
   "os": [
     "linux"
   ],
