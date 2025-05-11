@@ -1,6 +1,6 @@
 {
   "name": "@sirno/napi-qr-freebsd-x64",
-  "version": "0.1.6-1",
+  "version": "0.1.6-2",
   "os": [
     "freebsd"
   ],
