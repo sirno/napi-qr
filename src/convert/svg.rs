@@ -175,7 +175,6 @@ impl SvgBuilder {
     let (mut border_size, mut image_size) = Self::image_placement(self.image_background_shape, n);
 
     if let Some(override_size) = self.image_size {
-      dbg!(override_size);
       let gap = -(image_size - border_size);
       border_size = override_size + gap;
       image_size = override_size;
@@ -204,15 +203,11 @@ impl SvgBuilder {
     // Create module mask
     let mut mask = vec![false; n * n];
 
-    dbg!(border_size, image_size, placed_coord);
-
     // Calculate image boundaries once
     let left = ((n as f64 - border_size) / 2.0) as usize;
     let right = ((n as f64 + border_size) / 2.0) as usize;
     let top = left; // Same calculation if square
     let bottom = right; // Same calculation if square
-
-    dbg!(n, left, right, top, bottom, placed_coord, image_size);
 
     for y in 0..n {
       for x in 0..n {
