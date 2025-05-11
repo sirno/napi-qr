@@ -168,17 +168,14 @@ impl SvgBuilder {
     (border_size, (border_size - gap).round())
   }
 
-  fn image(&self, n: usize) -> String {
-    if self.image.is_none() {
-      return String::new();
-    }
-
-    let image = self.image.as_ref().unwrap();
-    let mut out = String::with_capacity(image.len() + 100);
+  fn precompute_image_placement(&self, n: usize) -> Option<(Vec<bool>, f64, f64, f64, f64)> {
+    // Precompute the image placement
+    let _image = self.image.as_ref()?;
 
     let (mut border_size, mut image_size) = Self::image_placement(self.image_background_shape, n);
 
     if let Some(override_size) = self.image_size {
+      dbg!(override_size);
       let gap = -(image_size - border_size);
       border_size = override_size + gap;
       image_size = override_size;
@@ -204,6 +201,37 @@ impl SvgBuilder {
       placed_coord = (x - border_size / 2f64, y - border_size / 2f64);
     }
 
+    // Create module mask
+    let mut mask = vec![false; n * n];
+
+    dbg!(border_size, image_size, placed_coord);
+
+    // Calculate image boundaries once
+    let left = ((n as f64 - border_size) / 2.0) as usize;
+    let right = ((n as f64 + border_size) / 2.0) as usize;
+    let top = left; // Same calculation if square
+    let bottom = right; // Same calculation if square
+
+    dbg!(n, left, right, top, bottom, placed_coord, image_size);
+
+    for y in 0..n {
+      for x in 0..n {
+        let index = y * n + x;
+        mask[index] = x >= left && x < right && y >= top && y < bottom;
+      }
+    }
+
+    Some((mask, placed_coord.0, placed_coord.1, border_size, image_size))
+  }
+
+  fn image(&self, coord_x: f64, coord_y: f64, border_size: f64, image_size: f64) -> String {
+    if self.image.is_none() {
+      return String::new();
+    }
+
+    let image = self.image.as_ref().unwrap();
+    let mut out = String::with_capacity(image.len() + 100);
+
     let format = match self.image_background_shape {
       ImageBackgroundShape::Square => {
         r#"<rect x="{0}" y="{1}" width="{2}" height="{2}" fill="{3}"/>"#
@@ -217,8 +245,8 @@ impl SvgBuilder {
     };
 
     let format = format
-      .replace("{0}", &placed_coord.0.to_string())
-      .replace("{1}", &placed_coord.1.to_string())
+      .replace("{0}", &coord_x.to_string())
+      .replace("{1}", &coord_y.to_string())
       .replace("{2}", &border_size.to_string())
       .replace("{3}", self.image_background_color.to_str());
 
@@ -226,8 +254,8 @@ impl SvgBuilder {
 
     out.push_str(&format!(
       r#"<image x="{0:.2}" y="{1:.2}" width="{2:.2}" height="{2:.2}" href="{3}" />"#,
-      placed_coord.0 + (border_size - image_size) / 2f64,
-      placed_coord.1 + (border_size - image_size) / 2f64,
+      coord_x + (border_size - image_size) / 2f64,
+      coord_y + (border_size - image_size) / 2f64,
       image_size,
       image
     ));
@@ -248,38 +276,42 @@ impl SvgBuilder {
   /// 0b01000000: bottom left
   /// 0b10000000: left
   ///
-  fn get_neighborhood(&self, qr: &QRCode, x: usize, y: usize) -> Neighborhood {
+  fn get_neighborhood(&self, qr: &QRCode, mask: &[bool], x: usize, y: usize) -> Neighborhood {
     let mut neighbors = 0u8;
 
-    if x > 0 && y > 0 && qr[y - 1][x - 1].value() {
+    if x > 0 && y > 0 && qr[y - 1][x - 1].value() && !mask[(y - 1) * qr.size + (x - 1)] {
       neighbors |= 0b00000001;
     }
-    if y > 0 && qr[y - 1][x].value() {
+    if y > 0 && qr[y - 1][x].value() && !mask[(y - 1) * qr.size + x] {
       neighbors |= 0b00000010;
     }
-    if x < qr.size - 1 && y > 0 && qr[y - 1][x + 1].value() {
+    if x < qr.size - 1 && y > 0 && qr[y - 1][x + 1].value() && !mask[(y - 1) * qr.size + (x + 1)] {
       neighbors |= 0b00000100;
     }
-    if x < qr.size - 1 && qr[y][x + 1].value() {
+    if x < qr.size - 1 && qr[y][x + 1].value() && !mask[y * qr.size + (x + 1)] {
       neighbors |= 0b00001000;
     }
-    if x < qr.size - 1 && y < qr.size - 1 && qr[y + 1][x + 1].value() {
+    if x < qr.size - 1
+      && y < qr.size - 1
+      && qr[y + 1][x + 1].value()
+      && !mask[(y + 1) * qr.size + (x + 1)]
+    {
       neighbors |= 0b00010000;
     }
-    if y < qr.size - 1 && qr[y + 1][x].value() {
+    if y < qr.size - 1 && qr[y + 1][x].value() && !mask[(y + 1) * qr.size + x] {
       neighbors |= 0b00100000;
     }
-    if x > 0 && y < qr.size - 1 && qr[y + 1][x - 1].value() {
+    if x > 0 && y < qr.size - 1 && qr[y + 1][x - 1].value() && !mask[(y + 1) * qr.size + (x - 1)] {
       neighbors |= 0b01000000;
     }
-    if x > 0 && qr[y][x - 1].value() {
+    if x > 0 && qr[y][x - 1].value() && !mask[y * qr.size + (x - 1)] {
       neighbors |= 0b10000000;
     }
 
     Neighborhood(neighbors)
   }
 
-  fn path(&self, qr: &QRCode) -> String {
+  fn path(&self, qr: &QRCode, mask: &[bool]) -> String {
     const DEFAULT_COMMAND: [ModuleStyle; 1] = [ModuleStyle::default()];
 
     // TODO: cleanup this basic logic
@@ -289,25 +321,23 @@ impl SvgBuilder {
       &DEFAULT_COMMAND
     };
 
-    let mut paths = vec![String::with_capacity(40 * qr.size * qr.size); styles.len()];
+    let mut paths = vec![String::with_capacity(20 * qr.size * qr.size); styles.len()];
     for path in paths.iter_mut() {
       path.push_str(r#"<path d=""#);
     }
     for y in 0..qr.size {
       let line = &qr[y];
       for (x, &cell) in line.iter().enumerate() {
-        if !cell.value() {
+        if !cell.value() || mask[y * qr.size + x] {
           continue;
         }
-        let neighbors = self.get_neighborhood(qr, x, y);
+        let neighbors = self.get_neighborhood(qr, mask, x, y);
 
         for (i, style) in styles.iter().enumerate() {
           paths[i].push_str(&style.module_fn(y + self.margin, x + self.margin, cell, &neighbors));
         }
       }
     }
-
-    dbg!(qr.size);
 
     for (i, style) in styles.iter().enumerate() {
       let style_color = style.get_color().as_ref().unwrap_or(&self.dot_color);
@@ -330,6 +360,8 @@ impl SvgBuilder {
   pub fn to_str(&self, qr: &QRCode) -> String {
     let n = qr.size;
 
+    let image_placement = self.precompute_image_placement(n);
+
     let mut out = String::with_capacity(11 * n * n / 2);
     out.push_str(&format!(
       r#"<svg viewBox="0 0 {0} {0}" xmlns="http://www.w3.org/2000/svg">"#,
@@ -342,8 +374,12 @@ impl SvgBuilder {
       self.background_color.to_str()
     ));
 
-    out.push_str(&self.path(qr));
-    out.push_str(&self.image(n));
+    if let Some((mask, coord_x, coord_y, border_size, image_size)) = image_placement {
+      out.push_str(&self.path(qr, &mask));
+      out.push_str(&self.image(coord_x, coord_y, border_size, image_size));
+    } else {
+      out.push_str(&self.path(qr, &vec![false; n * n]));
+    }
 
     out.push_str("</svg>");
     out
