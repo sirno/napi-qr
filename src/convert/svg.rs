@@ -221,7 +221,13 @@ impl SvgBuilder {
       }
     }
 
-    Some((mask, placed_coord.0, placed_coord.1, border_size, image_size))
+    Some((
+      mask,
+      placed_coord.0,
+      placed_coord.1,
+      border_size,
+      image_size,
+    ))
   }
 
   fn image(&self, coord_x: f64, coord_y: f64, border_size: f64, image_size: f64) -> String {
